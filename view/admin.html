@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>快新闻,短新闻</title>
+  <style>
+    .show{display: block}
+    .hide{display: none}
+  </style>
+</head>
+<body>
+<h1>快新闻</h1>
+<div id="app">
+  <div :class="formClass">
+    <form>
+          新闻内容: 
+          <br>
+          <textarea v-model="content" cols="80" rows="5">新闻内容啊新闻内容</textarea>
+          <a href="javascript:;" @click="formSubmit()">提交</a>
+    </form>
+  </div>
+
+  <div :class="listClass">
+    <a href="javascript:;" @click="newsAdd()">新增文章</a>
+    <ul>
+      <li v-for="item in news">
+        {{item.content}} 
+        <a href="javascript:;" @click="newAddOrEdit(item.id)">修改</a>
+        <a href="javascript:;" @click="newAddOrEdit(item.id)">删除</a>
+      </li>
+    </ul>
+  </div>
+  	
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    formClass: "hide",
+    listClass: "show",
+    id: null,
+    content: "新闻内容啊新闻内容",
+    news:[
+    	{
+    		"id":1,
+    		"content":"新闻啊新闻",
+    		"created_at":"2018-01-20 10:00:00"
+    	},
+    	{
+    		"id":1,
+    		"content":"新闻啊新闻",
+    		"created_at":"2018-01-20 10:00:00"
+    	},
+    	{
+    		"id":1,
+    		"content":"新闻啊新闻",
+    		"created_at":"2018-01-20 10:00:00"
+    	},
+    ]
+  },
+  methods: {
+    newAddOrEdit: function () {
+        axios.post('/news/addoredit', {
+          id: this.id,
+          content: this.content
+        })
+        .then(function (response) {
+          console.log(response);
+          window.location.reload()
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        this.newsAdd()
+    },
+    getNewsById: function() {
+        axios.get('/news/getnewsbyid', {
+          params: {
+            id: this.id
+          }
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    newsDel: function() {
+
+    },
+    newsAdd: function() {
+        this.id = null
+        this.formClass="show"
+        this.listClass="hide"
+    },
+    formSubmit: function() {
+        this.id = null
+        this.formClass="hide"
+        this.listClass="show"
+        return false
+    }
+  }
+})
+</script>
+</body>
+</html>

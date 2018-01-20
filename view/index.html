@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>快新闻,短新闻</title>
+</head>
+<body>
+<div id="app">
+	<ul>
+		<li v-for="item in news">{{item.content}}</li>
+	</ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    news:[
+    	{
+    		"id":1,
+    		"content":"新闻啊新闻",
+    		"created_at":"2018-01-20 10:00:00"
+    	},
+    	{
+    		"id":1,
+    		"content":"新闻啊新闻",
+    		"created_at":"2018-01-20 10:00:00"
+    	},
+    	{
+    		"id":1,
+    		"content":"新闻啊新闻",
+    		"created_at":"2018-01-20 10:00:00"
+    	},
+    ]
+  },
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+  }
+})
+</script>
+</body>
+</html>

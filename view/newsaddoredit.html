@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>快新闻,短新闻</title>
+</head>
+<body>
+<div id="app">
+    <form action="" onsubmit="formSubmit()">
+        新闻内容: 
+        <br>
+        <textarea v-model="content" cols="80" rows="10">新闻内容啊新闻内容</textarea>
+        <br>
+        <input type="submit" value="提交">
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    id: null,
+    content: "新闻内容啊新闻内容"
+  },
+  methods: {
+    formSubmit: function () {
+        axios.post('/news/addoredit', {
+          id: this.id,
+          content: this.content
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    getNewsById: function() {
+        axios.get('/news/getnewsbyid', {
+          params: {
+            id: this.id
+          }
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+})
+</script>
+</body>
+</html>
