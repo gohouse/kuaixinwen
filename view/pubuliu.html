@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.js"></script>
+<!-- or -->
+<script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>
+	<style>  
+    #container{  
+      margin: 0 auto;  
+      background: red;  
+    }  
+    .item{  
+      /*width: 100px;*/     /* 控制每个图片宽度 */  
+      margin: 2px;  
+    }  
+</style>  
+</head>
+<body>
+<div id="container">
+  <div class="item">
+    <img src="http://down.admin5.com/uploads/allimg/170802/2160_170802155832_1.jpg">
+  </div>
+  <div class="item">
+    <img src="http://down.admin5.com/uploads/allimg/170802/2160_170802160536_1.jpg">
+  </div>
+  <div class="item">
+    <img src="http://down.admin5.com/uploads/allimg/170728/2160_170728152847_1.jpg">
+  </div>
+  <div class="item">
+    <img src="http://down.admin5.com/uploads/allimg/170802/2160_170802160536_1.jpg">
+  </div>
+  <div class="item">
+    <img src="http://down.admin5.com/uploads/allimg/170728/2160_170728152847_1.jpg">
+  </div>
+  <div class="item">
+    <img src="http://down.admin5.com/uploads/allimg/170802/2160_170802160536_1.jpg">
+  </div>   
+</div>
+
+<script>
+	$('#container').masonry({  
+    itemSelector: '.item',  
+    isAnimated: true,  
+    columnWidth: 450,       
+    isFitWidth: true     // 自适应宽度  
+  });  
+</script>
+</body>
+</html>
