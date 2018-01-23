@@ -27,7 +27,7 @@ func Run(Route *dotweb.HttpServer) {
 	admin := Route.Group("/admin").Use(cors.Middleware(option))
 	admin.GET("/getnewslist",controller.GetNewsList)
 	admin.GET("/getnewsbyid",controller.GetNewsById)
-	admin.POST("/newsaddoreidt",controller.NewsAddOrEdit)
+	admin.POST("/newsaddoredit",controller.NewsAddOrEdit)
 	admin.POST("/newsdel",controller.NewsDel)
 }
 

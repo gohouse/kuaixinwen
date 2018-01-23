@@ -7,9 +7,9 @@ import (
 )
 
 func GetNewsList(ctx dotweb.Context) error {
-	res := model.GetNewsList(ctx)
+	res,count := model.GetNewsList(ctx)
 
-	ctx.WriteJson(utils.SuccessReturn(res))
+	ctx.WriteJson(utils.SuccessReturn(res, 200, map[string]int{"total":count}))
 
 	return nil
 }
