@@ -2,11 +2,11 @@ package config
 
 var DbConfig = map[string]map[string]string{
 	"mysql_dev": {
-		"host":     "192.168.200.248",
-		"username": "gcore",
-		"password": "gcore",
+		"host":     "localhost",
+		"username": "root",
+		"password": "Admin888",
 		"port":     "3306",
-		"database": "test",
+		"database": "kuaixinwen",
 		"charset":  "utf8",
 		"protocol": "tcp",
 		"driver":   "mysql", // 数据库驱动(mysql,sqlite,postgres,oracle,mssql)
