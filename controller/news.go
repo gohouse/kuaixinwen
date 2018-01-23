@@ -7,7 +7,7 @@ import (
 )
 
 func GetNewsList(ctx dotweb.Context) error {
-	res := model.GetNewsList
+	res := model.GetNewsList(ctx)
 
 	ctx.WriteJson(utils.SuccessReturn(res))
 
@@ -15,7 +15,7 @@ func GetNewsList(ctx dotweb.Context) error {
 }
 
 func GetNewsById(ctx dotweb.Context) error {
-	res := model.GetNewsById
+	res := model.GetNewsById(ctx)
 
 	ctx.WriteJson(utils.SuccessReturn(res))
 
@@ -26,9 +26,9 @@ func NewsAddOrEdit(ctx dotweb.Context) error {
 	res := model.NewsAddOrEdit(ctx)
 
 	if res > 0 {
-		ctx.WriteJson(utils.SuccessReturn())
+		ctx.WriteJson(utils.SuccessReturn(res))
 	} else {
-		ctx.WriteJson(utils.FailReturn("插入失败!!!"))
+		ctx.WriteJson(utils.FailReturn("插入或更新失败!!!"))
 	}
 
 	return nil

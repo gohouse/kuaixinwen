@@ -1,7 +1,11 @@
 package model
 
-import . "github.com/gohouse/kuaixinwen/bootstrap"
-import "github.com/devfeel/dotweb"
+import (
+	"github.com/devfeel/dotweb"
+	"strconv"
+	"github.com/gohouse/utils"
+	. "github.com/gohouse/kuaixinwen/bootstrap"
+)
 
 func NewsAddOrEdit(ctx dotweb.Context) int {
 	// 如果传了新闻的主键id则修改, 否则增加
@@ -23,15 +27,31 @@ func NewsAddOrEdit(ctx dotweb.Context) int {
 func NewsDel(ctx dotweb.Context) int {
 	return DB.Table("news").
 		Where("id", ctx.FormValue("id")).
-		Update()
+		Delete()
 }
 // 获取列表
 func GetNewsList(ctx dotweb.Context) interface{} {
+	var page int = 1
+	var limit int = 10
+	pageParam := ctx.FormValue("page")
+	if pageParam !=""{
+		pageInt,err := strconv.Atoi(pageParam)
+		utils.CheckErr(err)
+		page = pageInt
+	}
+
+	limitParam := ctx.FormValue("limit")
+	if limitParam !=""{
+		limitInt,err := strconv.Atoi(limitParam)
+		utils.CheckErr(err)
+		limit = limitInt
+	}
+
 	return DB.Table("news").
 		Where("status", 1).
 		Order("id desc").
-		Limit(10).
-		Page(1).
+		Limit(limit).
+		Page(page).
 		Get()
 }
 // 根据主键id获取一条数据

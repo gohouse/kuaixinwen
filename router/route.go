@@ -3,24 +3,31 @@ package router
 import (
 	"github.com/gohouse/kuaixinwen/controller"
 	"github.com/devfeel/dotweb"
+	"github.com/devfeel/middleware/cors"
+	"github.com/gohouse/utils"
 )
 
 func Run(Route *dotweb.HttpServer) {
+	// 设置cors选项中间件
+	option := cors.NewConfig().UseDefault()
+
 	// 首页测试
-	Route.GET("/test", func(ctx dotweb.Context) error{
+	Route.GET("/", func(ctx dotweb.Context) error{
 		return ctx.WriteString("快新闻首页!")
 	})
-	// 新闻列表
-	Route.GET("/newslist", controller.GetNewsList)
+	// json返回测试
+	Route.GET("/json", func(ctx dotweb.Context) error{
+		return ctx.WriteJson(utils.SuccessReturn())
+	}).Use(cors.Middleware(option))
 
-	news := Route.Group("news")
-	news.GET("getlist",controller.GetNewsList)
-	news.GET("getnewsbyid",controller.GetNewsById)
-	news.POST("addoreidt",controller.NewsAddOrEdit)
-	news.POST("del",controller.NewsDel)
-	//Hello World
-	//Route.GET("/", ShowIndex)
-	//Route.POST("/", TestPost)
-	//Route.POST("/user/getuserlist", GetUserList)
+	// 前台展示列表
+	Route.GET("/getnewslist",controller.GetNewsList).Use(cors.Middleware(option))
+
+	// 后台管理
+	admin := Route.Group("/admin").Use(cors.Middleware(option))
+	admin.GET("/getnewslist",controller.GetNewsList)
+	admin.GET("/getnewsbyid",controller.GetNewsById)
+	admin.POST("/newsaddoreidt",controller.NewsAddOrEdit)
+	admin.POST("/newsdel",controller.NewsDel)
 }
 

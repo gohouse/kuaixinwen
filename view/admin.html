@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 	<title>快新闻,短新闻</title>
   <style>
     .show{display: block}
@@ -11,30 +12,46 @@
 <body>
 <h1>快新闻</h1>
 <div id="app">
+  <div :class="listClass">
+    <a href="javascript:;" @click="newsAddOrEditBtn()">新增文章</a>
+    <ul>
+      <li v-for="(item, index) in news">
+        {{item.content}} 
+        <a href="javascript:;" @click="newsAddOrEditBtn(item.id,index)">修改</a>
+        <a href="javascript:;" @click="newsDel(item.id)">删除</a>
+      </li>
+    </ul>
+  </div>
+  	
   <div :class="formClass">
     <form>
           新闻内容: 
           <br>
           <textarea v-model="content" cols="80" rows="5">新闻内容啊新闻内容</textarea>
-          <a href="javascript:;" @click="formSubmit()">提交</a>
+          <a href="javascript:;" @click="newsAddOrEdit()">提交</a>
     </form>
   </div>
-
-  <div :class="listClass">
-    <a href="javascript:;" @click="newsAdd()">新增文章</a>
-    <ul>
-      <li v-for="item in news">
-        {{item.content}} 
-        <a href="javascript:;" @click="newAddOrEdit(item.id)">修改</a>
-        <a href="javascript:;" @click="newAddOrEdit(item.id)">删除</a>
-      </li>
-    </ul>
-  </div>
-  	
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+
+    axios.defaults.timeout = 15000;
+    axios.defaults.headers["Content-Type"] = 'application/x-www-form-urlencoded;charset=UTF-8';
+    axios.defaults.baseURL = 'http://localhost:8888';//api通用前缀设置
+    // axios.defaults.baseURL = 'https://api.simboss.com';//api通用前缀设置
+    // axios.defaults.baseURL = 'http://mobile_card.cc';//api通用前缀设置
+
+    axios.interceptors.request.use(
+            function (config) {
+                if (config.method == 'post') {
+                    config.data = JSON.stringify(config.data)
+                }
+                return config
+            }, function (error) {
+                return Promise.reject(error)
+            }
+    );
 var app = new Vue({
   el: '#app',
   data: {
@@ -44,36 +61,69 @@ var app = new Vue({
     content: "新闻内容啊新闻内容",
     news:[
     	{
-    		"id":1,
+    		"id":2,
     		"content":"新闻啊新闻",
     		"created_at":"2018-01-20 10:00:00"
     	},
     	{
-    		"id":1,
+    		"id":3,
     		"content":"新闻啊新闻",
     		"created_at":"2018-01-20 10:00:00"
     	},
     	{
-    		"id":1,
+    		"id":4,
     		"content":"新闻啊新闻",
     		"created_at":"2018-01-20 10:00:00"
     	},
     ]
   },
+    created: function () {
+        // this.news = this.getNewsList()
+        axios.post('/test', {
+          firstName: 'Fred',
+          lastName: 'Flintstone'
+        }).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error)
+        });
+    },
   methods: {
-    newAddOrEdit: function () {
+    newsAddOrEdit: function () {
         axios.post('/news/addoredit', {
           id: this.id,
           content: this.content
+        }).then(function (response) {
+          console.log(response);
+          window.location.reload()
+        }).catch(function (error) {
+          console.log(error);
+        });
+
+        this.formClass="hide"
+        this.listClass="show"
+    },
+    getNewsList: function() {
+        // axios.get('/news/getlist', {
+        // axios.post('/test', {
+        //     "id": this.id
+        // })
+        // .then(function (response) {
+        //   console.log(response);
+        // })
+        // .catch(function (error) {
+        //   console.log(error);
+        // });
+        axios.post('/test', {
+          firstName: 'Fred',
+          lastName: 'Flintstone'
         })
         .then(function (response) {
           console.log(response);
-          window.location.reload()
         })
         .catch(function (error) {
           console.log(error);
         });
-        this.newsAdd()
     },
     getNewsById: function() {
         axios.get('/news/getnewsbyid', {
@@ -88,19 +138,23 @@ var app = new Vue({
           console.log(error);
         });
     },
-    newsDel: function() {
-
+    newsDel: function(news_id) {
+        axios.post('/news/del', {
+          id: news_id
+        }).then(function (response) {
+          console.log(response);
+          window.location.reload()
+        }).catch(function (error) {
+          console.log(error);
+        });
     },
-    newsAdd: function() {
-        this.id = null
+    newsAddOrEditBtn: function(news_id, key) {
+        console.log(key)
+        console.log(news_id)
+        this.id = news_id
+        this.content = this.news[key].content
         this.formClass="show"
         this.listClass="hide"
-    },
-    formSubmit: function() {
-        this.id = null
-        this.formClass="hide"
-        this.listClass="show"
-        return false
     }
   }
 })
