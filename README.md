@@ -2,7 +2,7 @@
 言简意赅的快餐式新闻网站, gorose orm+dotweb框架快速构建go web网站实战项目
 ## 在线体验地址
 
-- [快新闻](http://kxw.fizzday.net)  
+- [快新闻首页](http://kxw.fizzday.net)  
 - [快新闻后台](http://kxw.fizzday.net/#/admin)
 ## 特色
 - 后端采用go编写,基本的增删改查啥都有  
