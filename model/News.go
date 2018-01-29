@@ -3,7 +3,6 @@ package model
 import (
 	"github.com/devfeel/dotweb"
 	"strconv"
-	"github.com/gohouse/utils"
 	. "github.com/gohouse/kuaixinwen/bootstrap"
 )
 
@@ -12,23 +11,35 @@ func NewsAddOrEdit(ctx dotweb.Context) int {
 
 	// 增加
 	if ctx.FormValue("id") == "" {
-		return DB.Table("news").
+		res, err := DB.Table("news").
 			Data(map[string]string{"content": ctx.FormValue("content")}).
 			Insert()
+		if err != nil {
+			return 0
+		}
+		return res
 	}
 
 	// 修改
-	return DB.Table("news").
+	res, err := DB.Table("news").
 		Data(map[string]string{"content": ctx.FormValue("content")}).
 		Where("id", ctx.FormValue("id")).
 		Update()
+	if err != nil {
+		return 0
+	}
+	return res
 }
 
 // 删除
 func NewsDel(ctx dotweb.Context) int {
-	return DB.Table("news").
+	res, err := DB.Table("news").
 		Where("id", ctx.FormValue("id")).
 		Delete()
+	if err != nil {
+		return 0
+	}
+	return res
 }
 
 // 获取列表
@@ -38,38 +49,52 @@ func GetNewsList(ctx dotweb.Context) (interface{}, int) {
 	pageParam := ctx.FormValue("page")
 	if pageParam != "" {
 		pageInt, err := strconv.Atoi(pageParam)
-		utils.CheckErr(err)
+		if err != nil {
+			return err, 0
+		}
 		page = pageInt
 	}
 
 	limitParam := ctx.FormValue("limit")
 	if limitParam != "" {
 		limitInt, err := strconv.Atoi(limitParam)
-		utils.CheckErr(err)
+		if err != nil {
+			return err, 0
+		}
 		limit = limitInt
 	}
-	count := DB.Table("news").
+	count, err := DB.Table("news").
 		Where("status", 1).
 		Count()
+	if err != nil {
+		return nil, 0
+	}
 
 	// 判断数据是否超限
 	if count < (limit * (page - 1)) {
 		return nil, count
 	}
 
-	list := DB.Table("news").
+	list, err := DB.Table("news").
 		Where("status", 1).
 		Order("id desc").
 		Limit(limit).
 		Page(page).
 		Get()
+	if err != nil {
+		return nil, 0
+	}
 
 	return list, count
 }
 
 // 根据主键id获取一条数据
 func GetNewsById(ctx dotweb.Context) interface{} {
-	return DB.Table("news").
+	res, err := DB.Table("news").
 		Where("id", ctx.FormValue("id")).
 		First()
+	if err != nil {
+		return ""
+	}
+	return res
 }

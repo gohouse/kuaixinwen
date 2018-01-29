@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gohouse/utils"
+	"github.com/gohouse/gorose/utils"
 	"github.com/gohouse/kuaixinwen/router"
 	. "github.com/gohouse/kuaixinwen/bootstrap"
 	"fmt"
@@ -19,7 +19,7 @@ func main()  {
 	//lvtao(w, r)
 
 	// 加载数据库
-	defer DB.Close()
+	//defer DB.Close()
 
 	// 加载路由
 	router.Run(App.HttpServer)

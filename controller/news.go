@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/devfeel/dotweb"
-	"github.com/gohouse/utils"
 	"github.com/gohouse/kuaixinwen/model"
+	"github.com/gohouse/gorose/utils"
 )
 
 func GetNewsList(ctx dotweb.Context) error {

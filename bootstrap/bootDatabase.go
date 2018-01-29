@@ -9,7 +9,14 @@ import (
 var DB gorose.Database
 
 func init() {
+	var err error
 	// 加载database
-	DB = gorose.Open(config.DbConfig, "mysql_dev")
-	DB.Ping()
+	DB,err = gorose.Open(config.DbConfig)
+	if err!=nil{
+		panic("数据库链接失败")
+	}
+	errs := DB.Ping()
+	if errs!=nil{
+		panic("数据库链接失败")
+	}
 }
