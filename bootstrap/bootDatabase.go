@@ -6,7 +6,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var DB gorose.Database
+var DB gorose.Connection
 
 func init() {
 	var err error

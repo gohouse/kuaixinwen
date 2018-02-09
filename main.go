@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gohouse/gorose/utils"
 	"github.com/gohouse/kuaixinwen/router"
 	. "github.com/gohouse/kuaixinwen/bootstrap"
 	"fmt"
@@ -27,7 +26,9 @@ func main()  {
 	// 启动web服务
 	err := App.StartServer(8888)
 
-	utils.CheckErr(err)
+	if err!=nil{
+		fmt.Println(err)
+	}
 }
 
 func StartServer() error {
