@@ -13,11 +13,16 @@
 - 开放式后台管理系统(咳咳, 就是不用登录直接可以操作体验, 说明白点就是:懒,没做登录)  
 
 ## 开箱体验的正确姿势
-- 下载  
+- 下载   
 ```go
 go get github.com/gohouse/kuaixinwen
 ```
-- 启动go服务
+
+- 导入sql目录的sql语句  
+
+- 修改`config`目录的`database.go`配置为正确的数据库链接配置  
+
+- 启动go服务  
 ```go
 cd github.com/gohouse/kuaixinwen
 go run main.go
