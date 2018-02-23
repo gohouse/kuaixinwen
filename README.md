@@ -1,5 +1,6 @@
 # kuaixinwen
-言简意赅的快餐式新闻网站, gorose orm+dotweb框架快速构建go web网站实战项目
+言简意赅的快餐式新闻网站, gorose orm+dotweb框架快速构建go web网站实战项目  
+[该项目实现过程: gorose orm+dotweb框架快速构建go web网站实战](https://segmentfault.com/blog/fizzday)
 ## 在线体验地址
 
 - [快新闻首页](http://kxw.fizzday.net)  

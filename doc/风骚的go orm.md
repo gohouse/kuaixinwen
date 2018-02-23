@@ -2,9 +2,7 @@ gorose, 最风骚的go orm, 拥有链式操作, 开箱即用, 一分钟上手等
 
 ### 风骚一 : 开箱即用, 一分钟上手
 ```go
-gorose.Open("xxxxxx这里是配置文件中的数据库配置")
-
-var db gorose.Database
+db,_ := gorose.Open("xxxxxx这里是配置文件中的数据库配置")
 
 db.Query("select * from user")  // 原生sql执行, 返回格式化后的结果
 ```
@@ -42,23 +40,36 @@ db.Transaction(func(){
 })
 ```
 
-### 风骚六 : 一键切换数据库连接, 自由畅想在任何数据库之间
+### 风骚六 : 聚合查询, 常规查询等, 统统一行搞定
 ```go
-db.Connect("mysql2").Table("goods").First()
+user := db.Table("users")
+user.Count()
+user.Where("id","<", 10).Get()
+user.Where("len(name)>5").First()
 ```
 
 ### 风骚七 : 大量数据自动分块处理, 我还是只需要专注于代码本身  
 
 user表中的所有数据, 我每次取出100条, 然后处理完, 自动取下一个100条, 继续处理, 如此反复, 直到处理完指定条件的数据
 ```go
-db.Table("user").Where("id","<",10000).Chunk(100, func(data []map[string]interface{}){
-	for _, item := range data {
-		fmt.Println(item["name"])
-	}
-})
+db.Table("users").Fields("id, name").Where("id", ">", 2).Chunk(100, func(data []map[string]interface{}) {
+		fmt.Println(data)
+		for _, item := range data {
+			fmt.Println(item["id"], item["name"])
+		}
+	})
 ```
 
-### 风骚八 : 无感知读写分离, 依然只专注于代码本身, 只需要在配置中设置读库和写库即可
+### 风骚八 : 复杂嵌套where查询, 只需要一个简单的闭包搞定
+```go
+user, err := Users.Where("id", ">", 1).Where(func() {
+		Users.Where("name", "fizz").OrWhere(func() {
+			Users.Where("name", "fizz2").Where(func() {
+				Users.Where("name", "fizz3").OrWhere("website", "fizzday")
+			})
+		})
+	}).Where("job", "it").First()
+```
 
 ## 更多风骚之处
 - 请看 [https://github.com/gohouse/gorose](https://github.com/gohouse/gorose)  

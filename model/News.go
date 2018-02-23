@@ -8,12 +8,12 @@ import (
 
 func NewsAddOrEdit(ctx dotweb.Context) int {
 	// 如果传了新闻的主键id则修改, 否则增加
+	news := DB.Table("news").
+		Data(map[string]string{"content": ctx.FormValue("content")})
 
 	// 增加
 	if ctx.FormValue("id") == "" {
-		res, err := DB.Table("news").
-			Data(map[string]string{"content": ctx.FormValue("content")}).
-			Insert()
+		res, err := news.Insert()
 		if err != nil {
 			return 0
 		}
@@ -21,8 +21,7 @@ func NewsAddOrEdit(ctx dotweb.Context) int {
 	}
 
 	// 修改
-	res, err := DB.Table("news").
-		Data(map[string]string{"content": ctx.FormValue("content")}).
+	res, err := news.
 		Where("id", ctx.FormValue("id")).
 		Update()
 	if err != nil {
